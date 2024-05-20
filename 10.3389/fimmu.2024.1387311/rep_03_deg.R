@@ -1,51 +1,9 @@
 data_path = './10.3389/fimmu.2024.1387311/data'
 load(paste0(data_path, '/rep_02_dp.RData'))
 
-# ====== PCA Heat Map ======
-
 exp = merged_exp
-remove(merged_exp)
-
+# remove(merged_exp)
 exp_data = as.data.frame(t(exp))
-
-library(FactoMineR)
-library(factoextra)
-
-data_pca = PCA(exp_data, graph = F)
-pca_plot = fviz_pca_ind(
-  data_pca,
-  geom.ind = "point",
-  col.ind = group,
-  # palette = c("#00AFBB", "#E7B800"),
-  addEllipses = T,
-  legend.title = "Group"
-)
-pca_plot
-# bad
-
-# pick 1000 most variable genes
-cg = names(tail(sort(apply(exp, 1, sd)), 50))
-n = exp[cg,]
-
-
-# ====== Heat Map ======
-
-library(pheatmap)
-
-annotation_col = data.frame(group = group)
-rownames(annotation_col) = colnames(n)
-
-pca_heat_map = pheatmap(
-  n,
-  annotation_col = annotation_col,
-  show_rownames = T,
-  show_colnames = F,
-  cluster_rows = F,
-  cluster_cols = T,
-  scale = "row",
-  breaks = seq(-3, 3, length.out = 100)
-)
-pca_heat_map
 
 
 # ====== DEG ======
@@ -126,6 +84,55 @@ volcano_plot =
     segment.color = 'grey50'
   )
 volcano_plot
+
+# ====== PCA Heat Map ======
+
+# pick 50 most variable genes
+# cg = names(tail(sort(apply(exp, 1, sd)), 50))
+
+# pick 25 for most up, 25 for most down
+up_25 = head(exp_data[exp_data$change == 'up',][order(exp_data$P.Value),], 25)
+down_25 = head(exp_data[exp_data$change == 'down',][order(exp_data$P.Value),], 25)
+cg = c(up_25$symbol, down_25$symbol)
+
+
+library(FactoMineR)
+library(factoextra)
+
+exp_data = as.data.frame(t(merged_exp))
+
+data_pca = PCA(exp_data, graph = F)
+pca_plot = fviz_pca_ind(
+  data_pca,
+  geom.ind = "point",
+  col.ind = group,
+  # palette = c("#00AFBB", "#E7B800"),
+  addEllipses = T,
+  legend.title = "Group"
+)
+pca_plot
+# bad
+
+
+# ====== Heat Map ======
+
+library(pheatmap)
+
+annotation_col = data.frame(group = group)
+n = merged_exp[cg,]
+rownames(annotation_col) = colnames(n)
+
+pca_heat_map = pheatmap(
+  n,
+  annotation_col = annotation_col,
+  show_rownames = T,
+  show_colnames = F,
+  cluster_rows = F,
+  cluster_cols = T,
+  scale = "row",
+  breaks = seq(-3, 3, length.out = 100)
+)
+pca_heat_map
 
 # combine volcano plot and heat map into one figure
 

@@ -62,7 +62,10 @@ rownames(df) = c(1, 2, 3, 4)
 
 ![Table 01](res/rep01_tab.jpg)
 
-**注**：原作者犯了低级错误：把平台 GPL 打成 GLP，提示我们能生成尽量不要手打。
+**注**：原作者犯了低级错误：
+把平台 GPL 打成 GLP，
+**而且数据集和平台的对应关系错误** (double checked)，
+提示我们能生成尽量不要手打。
 
 ### Data Processing
 
@@ -75,7 +78,7 @@ rownames(df) = c(1, 2, 3, 4)
 ### Figure 02
 
 * 火山图 (volcano plot)
-* 热图 (heat map)
+* 差异基因热图 (DEG heat map)
 
 > DEG
 > 

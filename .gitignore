@@ -1,12 +1,11 @@
 .idea
-<<<<<<< HEAD
 
 # R stuff
 
 *.RData
 *.Rproj*
+*.Rhistory
 
 # GEO stuff
+
 *.txt.gz
-=======
->>>>>>> 2012b8a986fd7f00cf3112911de87dde06cea308
