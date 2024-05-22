@@ -60,7 +60,7 @@ p =
   geom_point(alpha = 0.4, size = 3.5, aes(color = change)) +
   ylab("-log10(P.Value)") +
   # scale_color_manual(values = c("blue", "grey", "red")) +
-  scale_color_manual(values = c("#00AFBB", "grey", "#E7B800")) +
+  scale_color_manual(values = c("slategray", "sandybrown", "dodgerblue")) +
   geom_vline(xintercept = c(-logFC_t, logFC_t), lty=4, col="black", lwd=0.8) +
   geom_hline(yintercept = -log10(P_Value_t), lty=4, col="black", lwd=0.8) +
   theme_bw()
@@ -79,9 +79,16 @@ volcano_plot =
   ggrepel::geom_text_repel(
     data = top_20,
     aes(label = symbol),
-    box.padding = 0.5,
-    point.padding = 0.5,
-    segment.color = 'grey50'
+    fill = "white"
+  )
+volcano_plot
+
+volcano_plot = 
+  p +
+  ggrepel::geom_label_repel(
+    data = top_20,
+    aes(label = symbol),
+    fill = "white"
   )
 volcano_plot
 
@@ -139,3 +146,11 @@ pca_heat_map
 library(ggplotify)
 
 volcano_plot + as.ggplot(pca_heat_map)
+
+
+# save
+
+save(
+  deg,
+  file = paste0(data_path, '/rep_03_deg.RData')
+)

@@ -93,3 +93,9 @@ rownames(df) = c(1, 2, 3, 4)
 复现评价：
 * 火山图：优
 * 热图：差
+
+### Figure 03
+
+富集分析
+
+![Figure 03](res/fig03.jpg)

@@ -9,3 +9,4 @@
 # GEO stuff
 
 *.txt.gz
+.Rproj.user
