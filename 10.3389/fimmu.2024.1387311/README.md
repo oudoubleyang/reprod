@@ -82,6 +82,12 @@ rownames(df) = c(1, 2, 3, 4)
 
 > DEG
 > 
+> Differentially expressed genes (DEGs) were identified using the limma package with |log Fold Change (FC)| ≥ 1 and P-value < 0.05 used as the cutoff for filtering the DEGs (14).
+> 
+> DEGs were visualized using a heatmap and volcano map obtained by using pheatmap and ggplot2 packages.
+> 
+> ---
+> 
 > A total of 575 DEGs (including 383 upregulated genes and 192 downregulated genes) were identified between RA and normal samples. The top 10 upregulated and downregulated DEGs are presented in a volcano plot (Figure 2A). In addition, the expression levels of the 25 most upregulated and 25 most downregulated genes are shown in a heatmap (Figure 2B).
 
 ![Figure 02](res/fig02.jpg)

@@ -22,8 +22,8 @@ head(deg)
 
 logFC_t = 1
 P_Value_t = 0.05
-down_cond = (deg$P.Value < P_Value_t) & (deg$logFC < -logFC_t)
-up_cond   = (deg$P.Value < P_Value_t) & (deg$logFC >  logFC_t)
+down_cond = (deg$P.Value < P_Value_t) & (deg$logFC <= -logFC_t)
+up_cond   = (deg$P.Value < P_Value_t) & (deg$logFC >=  logFC_t)
 deg = mutate(
   deg,
   change = ifelse(
