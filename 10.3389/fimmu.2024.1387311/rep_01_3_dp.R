@@ -1,5 +1,5 @@
-data_path = './10.3389/fimmu.2024.1387311/data'
-load(paste0(data_path, '/rep_01_dl.RData'))
+data_path = './10.3389/fimmu.2024.1387311/data/'
+load(paste0(data_path, 'rep_01_2_dl.RData'))
 
 
 # first do log2 + 1
@@ -173,5 +173,5 @@ group = c(group_55235, group_12021, group_77298)
 save(
   merged_exp,
   group,
-  file = paste0(data_path, '/rep_02_dp.RData')
+  file = paste0(data_path, 'rep_01_3_dp.RData')
 )

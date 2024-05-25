@@ -2,7 +2,7 @@
 
 library(GEOquery)
 
-data_path = './10.3389/fimmu.2024.1387311/data'
+data_path = './10.3389/fimmu.2024.1387311/data/'
 
 # gse_datasets = c("GSE55235", "GSE77298", "GSE12021", "GSE55457")
 # eSet <- getGEO(gse_num, destdir = 'data', getGPL= F)
@@ -72,5 +72,5 @@ save(
   GSE12021, exp_12021,
   GSE55457, exp_55457,
   data_path,
-  file = paste0(data_path, '/rep_01_dl.RData')
+  file = paste0(data_path, 'rep_01_2_dl.RData')
 )

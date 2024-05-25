@@ -1,10 +1,15 @@
+# general
+
 .idea
+data
+
 
 # R stuff
 
 *.RData
 *.Rproj*
 *.Rhistory
+
 
 # GEO stuff
 

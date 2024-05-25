@@ -1,5 +1,5 @@
-data_path = './10.3389/fimmu.2024.1387311/data'
-load(paste0(data_path, '/rep_02_dp.RData'))
+data_path = './10.3389/fimmu.2024.1387311/data/'
+load(paste0(data_path, 'rep_01_3_dp.RData'))
 
 exp = merged_exp
 # remove(merged_exp)
@@ -152,5 +152,5 @@ volcano_plot + as.ggplot(pca_heat_map)
 
 save(
   deg,
-  file = paste0(data_path, '/rep_03_deg.RData')
+  file = paste0(data_path, 'rep_02_deg.RData')
 )

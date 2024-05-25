@@ -1,6 +1,6 @@
-data_path = './10.3389/fimmu.2024.1387311/data'
-load(paste0(data_path, '/rep_02_dp.RData'))
-load(paste0(data_path, '/rep_03_deg.RData'))
+data_path = './10.3389/fimmu.2024.1387311/data/'
+load(paste0(data_path, 'rep_01_3_dp.RData'))
+load(paste0(data_path, 'rep_02_deg.RData'))
 
 exp = merged_exp
 

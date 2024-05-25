@@ -32,11 +32,13 @@
 
 ### Figure 01
 
-* 流程图
+* 内容：流程图
+* 目的：展示此文章研究流程
 
 ![Figure 01](res/fig01.jpg)
 
 复现：[draw.io](https://app.diagrams.net/)
+
 
 ![Figure 01](res/rep01.jpg)
 
@@ -44,7 +46,7 @@
 
 ![Table 01](res/fig01_tab.jpg)
 
-复现：节选自 [rep_01_dl.R](rep_01_dl.R)
+复现：节选自 [rep_01_2_dl.R](rep_01_2_dl.R)
 
 ```r
 dat_55457 = c(
@@ -62,6 +64,11 @@ rownames(df) = c(1, 2, 3, 4)
 
 ![Table 01](res/rep01_tab.jpg)
 
+---
+
+* 复现评价：优
+* 概念理解：完全
+
 **注**：原作者犯了低级错误：
 把平台 GPL 打成 GLP，
 **而且数据集和平台的对应关系错误** (double checked)，
@@ -73,12 +80,14 @@ rownames(df) = c(1, 2, 3, 4)
 * 三个分析数据集，使用的平台不同
 * 数据集含有骨关节炎 osteoarthritis 样本，需排除
 
-详见 [rep_02_dp.R](rep_02_dp.R)
+详见 [rep_01_3_dp.R](rep_01_3_dp.R)
 
 ### Figure 02
 
-* 火山图 (volcano plot)
-* 差异基因热图 (DEG heat map)
+* 内容
+  * 火山图 (volcano plot)
+  * 差异基因热图 (DEG heat map)
+* 目的：展示**差异**表达基因
 
 > DEG
 > 
@@ -92,16 +101,45 @@ rownames(df) = c(1, 2, 3, 4)
 
 ![Figure 02](res/fig02.jpg)
 
-复现：详见 [rep_03_deg.R](rep_03_deg.R)
+复现：详见 [rep_02_deg.R](rep_02_deg.R)
 
 ![Figure 02](res/rep02.jpg)
 
-复现评价：
-* 火山图：优
-* 热图：差
+* 复现评价：
+  * 火山图：优 (格式一致，数据基本一致)
+  * 热图：中 (格式一致，数据不一致)
+* 概念理解：完全
 
 ### Figure 03
 
-富集分析
+* 内容：富集分析
+  * GO Enrichment
+  * KEGG Enrichment
+  * GSEA Analysis
+  * GSVA Analysis
+* 目的：展示**富集**分析结果
 
 ![Figure 03](res/fig03.jpg)
+
+复现：详见 [rep_03_enrich.R](rep_03_enrich.R)
+
+(缺图)
+
+(Figure 03 - D 难度过大，暂时跳过)
+
+* 复现评价：
+  * GO Enrichment: 中 (格式基本一致，数据基本一致)
+  * KEGG Enrichment: 良 (格式一致，数据不一致)
+  * GSEA Analysis: 良 (格式一致，数据不一致)
+  * GSVA Analysis: 失败
+* 概念理解：较弱
+
+### Figure 04
+
+* 内容：WGCNA
+  * Scale independence & Mean connectivity
+  * Gene dendrogram & Module colors
+  * Module-trait relationships
+  * Module membership vs Gene significance
+* 目的：展示 WGCNA 分析结果
+  * WGCNA: Weighted Gene Co-expression Network Analysis 加权基因共表达网络分析
