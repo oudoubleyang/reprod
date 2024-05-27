@@ -12,6 +12,7 @@ gene_diff = c(gene_up, gene_down)
 library(clusterProfiler)
 library(stringr)
 library(ggplot2)
+library(ggplotify)
 
 # BiocManager::install('pathfindR')
 library(pathfindR)
@@ -25,7 +26,7 @@ library(enrichplot)
 
 # ====== A: GO Enrichment Data ======
 
-ego_file = paste0(data_path, '/EGO.Rdata')
+ego_file = paste0(data_path, 'rep_03_EGO.Rdata')
 if (!file.exists(ego_file)) {
   print(Sys.time())
   print('ego')
@@ -85,12 +86,14 @@ ego_plot = dotplot(
 
 ego_plot
 
+plot_a = as.ggplot(ego_plot)
+
 # ====== B: KEGG Enrichment Data ======
 
 # COMMENT OUT HERE
 if (FALSE) {
 
-kegg_file = paste0(data_path, '/KEGG.Rdata')
+kegg_file = paste0(data_path, 'rep_03_KEGG.Rdata')
 if (!file.exists(kegg_file)) {
   kegg_up = enrichKEGG(gene = gene_up, organism = 'hsa')
   kegg_down = enrichKEGG(gene = gene_down, organism = 'hsa')
@@ -123,7 +126,7 @@ kegg_diff =
 }
 
 
-pfr_file = paste0(data_path, '/pfr.Rdata')
+pfr_file = paste0(data_path, 'rep_03_pfr.Rdata')
 if (!file.exists(pfr_file)) {
   deg_for_pfr = data.frame(deg$symbol, deg$logFC, deg$adj.P.Val)
   colnames(deg_for_pfr) = c('symbol', 'logFC', 'adj.P.Val')
@@ -162,20 +165,22 @@ kegg_plot
 pfr_plot = enrichment_chart(pfr_df)
 pfr_plot
 
+plot_b = as.ggplot(pfr_plot)
+
 
 # ====== C: GSEA Analysis ======
 
-# 共同基因
-cnetplot(ego, categorySize = "pvalue", foldChange = geneList)
-cnetplot(ego, showCategory = 3, foldChange = geneList)
-
 # data(geneList, package="DOSE")
 library(DOSE)
-data(geneList)
+# data(geneList)
 
 geneList = deg$logFC
 names(geneList) = deg$ENTREZID
 geneList = sort(geneList, decreasing = T)
+
+# 共同基因
+cnetplot(ego, categorySize = "pvalue", foldChange = geneList)
+cnetplot(ego, showCategory = 3, foldChange = geneList)
 
 # kk_gse = gseKEGG(geneList, organism = 'hsa', verbose = F)
 # down_kegg = kk_gse[kk_gse$pvalue < 0.05 & kk_gse$enrichmentScore < 0,]
@@ -186,7 +191,7 @@ geneList = sort(geneList, decreasing = T)
 
 # https://yulab-smu.top/biomedical-knowledge-mining-book/enrichplot.html
 
-gse_file = paste0(data_path, '/gse.Rdata')
+gse_file = paste0(data_path, 'rep_03_gse.Rdata')
 if (!file.exists(gse_file)) {
   gene_set = gseDO(geneList)
   save(gene_set, file = gse_file)
@@ -197,6 +202,8 @@ if (!file.exists(gse_file)) {
 gsea_plot = gseaplot2(gene_set, geneSetID = 1:5)
 gsea_plot
 
+plot_c = as.ggplot(gsea_plot)
+
 
 # ====== D: GSVA ======
 
@@ -206,15 +213,83 @@ gsea_plot
 
 # BiocManager::install('GSVA')
 library(GSVA)
+library(GSVAdata)
 
 # first construct the gene set for GSVA
-gset_raw = clusterProfiler::read.gmt(paste0(data_path, '/c2.cp.kegg.v7.5.1.entrez.gmt'))
+# gset_raw = clusterProfiler::read.gmt(paste0(data_path, '/c2.cp.kegg.v7.5.1.entrez.gmt'))
 
-# generate a list of GSEABase::GeneSet
+# https://www.biostars.org/p/206323/
+gset = getGmt(paste0(data_path, 'c2.cp.kegg.v7.5.1.entrez.gmt'))
 
+exp2id = exp
+rownames(exp2id) = deg$ENTREZID[match(rownames(exp), deg$symbol)]
+# exp2id = as.matrix(exp2id)
 
-
-
-
-deg_param = gsvaParam(exp, gset, minSize=10, maxSize=500)
+deg_param = gsvaParam(exp2id, gset, minSize=10, maxSize=500)
 deg_gsva = gsva(deg_param)
+
+library(limma)
+
+mod <- model.matrix(~ factor(group))
+colnames(mod) <- c("Control", "RA")
+fit <- lmFit(deg_gsva, mod)
+fit <- eBayes(fit)
+res <- decideTests(fit, p.value=0.01)
+
+tt <- topTable(fit, coef=2, n=Inf)
+DEpwys <- rownames(tt)[tt$adj.P.Val <= 0.01]
+
+# DEpwys_es <- exprs(deg_gsva[DEpwys, ])
+DEpwys_es = deg_gsva[DEpwys, ]
+colorLegend <- c("darkgreen", "forestgreen")
+names(colorLegend) <- c("Control", "RA")
+# sample.color.map <- colorLegend[pData(deg_gsva)[, "subtype"]]
+sample.color.map <- colorLegend[group]
+names(sample.color.map) <- colnames(DEpwys_es)
+sampleClustering <- hclust(as.dist(1-cor(DEpwys_es, method="spearman")),
+                           method="complete")
+geneSetClustering <- hclust(as.dist(1-cor(t(DEpwys_es), method="pearson")),
+                            method="complete")
+heatmap(
+  DEpwys_es, ColSideColors=sample.color.map,
+  # xlab="samples",
+  # ylab="Pathways",
+  margins=c(2, 20),
+  # labRow=substr(gsub("_", " ", gsub("^KEGG_|^REACTOME_|^BIOCARTA_", "", rownames(DEpwys_es))), 1, 35),
+  labRow = rownames(DEpwys_es),
+  labCol="",
+  scale="row",
+  # Colv=as.dendrogram(sampleClustering),
+  Colv=NA,
+  Rowv=as.dendrogram(geneSetClustering)
+)
+legend("right", names(colorLegend), fill=colorLegend, inset=0.01, bg="white")
+
+dev.off()
+
+library(pheatmap)
+
+annotation_col = data.frame(group = group)
+rownames(annotation_col) = colnames(DEpwys_es)
+
+gsva_heat_map = pheatmap(
+  DEpwys_es,
+  color = colorRampPalette(c("darkslateblue", "white", "firebrick"))(100),
+  annotation_col = annotation_col,
+  show_rownames = T,
+  show_colnames = F,
+  cluster_rows = T,
+  cluster_cols = F,
+  scale = "row",
+  breaks = seq(-3, 3, length.out = 100),
+  fontsize = 6
+)
+gsva_heat_map
+
+plot_d = as.ggplot(gsva_heat_map)
+
+
+# ====== FINAL PLOT ======
+
+plot_comb = (plot_a + plot_c) / (plot_b + plot_d)
+plot_comb

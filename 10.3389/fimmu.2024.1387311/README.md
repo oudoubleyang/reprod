@@ -123,15 +123,13 @@ rownames(df) = c(1, 2, 3, 4)
 
 复现：详见 [rep_03_enrich.R](rep_03_enrich.R)
 
-(缺图)
-
-(Figure 03 - D 难度过大，暂时跳过)
+![Figure 03](res/rep03.jpg)
 
 * 复现评价：
   * GO Enrichment: 中 (格式基本一致，数据基本一致)
   * KEGG Enrichment: 良 (格式一致，数据不一致)
-  * GSEA Analysis: 良 (格式一致，数据不一致)
-  * GSVA Analysis: 失败
+  * GSEA Analysis: 中 (格式一致，数据明显不一致)
+  * GSVA Analysis: 良 (格式一致，数据不一致)
 * 概念理解：较弱
 
 ### Figure 04
