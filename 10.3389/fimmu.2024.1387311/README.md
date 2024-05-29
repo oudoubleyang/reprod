@@ -141,3 +141,16 @@ rownames(df) = c(1, 2, 3, 4)
   * Module membership vs Gene significance
 * 目的：展示 WGCNA 分析结果
   * WGCNA: Weighted Gene Co-expression Network Analysis 加权基因共表达网络分析
+
+![Figure 04](res/fig04.jpg)
+
+复现：详见 [rep_04_wg.R](rep_04_wg.R)
+
+![Figure 04](res/rep04.jpg)
+
+* 复现评价：
+  * A: 优 (格式一致，数据一致)
+  * B: 中 (格式一致，数据明显不一致)
+  * C: 中 (格式一致，数据不一致)
+  * D: 良 (格式一致，数据不一致)
+* 概念理解：较弱
